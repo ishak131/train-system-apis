@@ -11,21 +11,22 @@ userRouter.post('/createUser', async (req, res) => {
     try {
         const isFoundUser = await User.findOne({
             email: req.body.email,
-            identityNumber: req.body.identityNumber
+            nationalID: req.body.nationalID,
         });
         if (isFoundUser)
             return res.status(409).send({ error: 'This user already exists' });
         const salt = await bcrypt.genSalt(10)
-        const newPassword = await bcrypt.hash(password, salt);
+        const newPassword = await bcrypt.hash(req.body.password, salt);
         req.body.password = newPassword
         const user = await new User(req.body)
         await user.save()
         const token = jwt.sign(
-            { email, _id: user._id },
+            { email: req.body.email, _id: user._id },
             process.env.TOKEN_PRIVATE_KEY,
             { expiresIn: '30d' });
         return res.json({ token })
     } catch (err) {
+        console.log(err);
         return res.status(400).send({ error: err })
     }
 })

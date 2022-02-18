@@ -22,17 +22,21 @@ app.use(express.json())
 app.use(cors())
 
 /////////////////////////////////
+
 app.use('/static', express.static(path.join(__dirname, 'public')))
 //app.use('/static', express.static('public'))
+
 ////////////////////////////////
+
 app.use("/user", userRouter)
 app.use("/", authRouter)
+
 /////////////////////////////////////////////////
 
 app.get('/', (req, res) => res.send('yes aim working on host 4000'))
 
+/////////////////// conecting database with apis
 
-/////////////////// conecting database with apis 
 mongoose.connect(
     process.env.DB_CONECTION,
     { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: true },
