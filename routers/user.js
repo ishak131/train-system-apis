@@ -40,9 +40,14 @@ userRouter.get('/logIn/:email/:password', async (req, res) => {
             return res.status(401).send({ error: 'email or password is wrong' });
         const passwordFromDB = loggedInUser.password;
         const passwordIsCorrect = await bcrypt.compare(password, passwordFromDB);
-        return passwordIsCorrect ?
-            res.json({ token: loggedInUser.token }) :
-            res.status(401).send({ error: 'email or password is wrong' });
+        if (passwordIsCorrect) {
+            const token = jwt.sign(
+                { email, _id: loggedInUser._id },
+                process.env.TOKEN_PRIVATE_KEY,
+                { expiresIn: '30d' })
+            return res.json({ token })
+        }
+        return res.status(401).send({ error: 'email or password is wrong' });
     } catch (error) {
         res.status(400).send({ error })
     }
