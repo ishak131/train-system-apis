@@ -19,6 +19,9 @@ async function authinticate(req, res, next) {
     }
 }
 
-authRouter.post('/auth', authinticate)
+authRouter.post('/auth', authinticate,async (req, res)=>{
+    return res.send({tokenState:"token is authorized"})
+
+})
 
 module.exports = { authinticate, authRouter }
