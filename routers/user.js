@@ -9,10 +9,8 @@ const userRouter = express.Router();
 
 userRouter.post('/createUser', async (req, res) => {
     try {
-        const isFoundUser = await User.findOne({
-            email: req.body.email,
-            nationalID: req.body.nationalID,
-        });
+        const isFoundUser = await User.findOne({ $or: [{ email: req.body.email }, { nationalID: req.body.nationalID }]});
+        console.log(isFoundUser);
         if (isFoundUser)
             return res.status(409).send({ error: 'This user already exists' });
         const salt = await bcrypt.genSalt(10)
@@ -26,7 +24,6 @@ userRouter.post('/createUser', async (req, res) => {
             { expiresIn: '30d' });
         return res.json({ token })
     } catch (err) {
-        console.log(err);
         return res.status(400).send({ error: err })
     }
 })
