@@ -19,8 +19,7 @@ class Employee extends BasicOperation {
     }
     async getManyEmployees(req, res) {
         const { limit } = req.params;
-        const { department } = req.body;
-        const getEmployees = await this.Model.find((department ? { department: department } : { _id: { $ne: null } })).limit(parseInt(limit));
+        const getEmployees = await this.Model.find().limit(parseInt(limit));
         const result = getEmployees.map((element) => {
             const { _id, firstName, lastName, jobTitle, personalPicture } = element;
             return { _id, firstName, lastName, jobTitle, personalPicture };
