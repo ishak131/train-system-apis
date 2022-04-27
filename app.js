@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const { newsRouter, newsRouterClient } = require('./src/routes/News/newsRoutes');
 const employeeRouter = require('./src/routes/Employee/employeeRoutes');
 const cors = require('cors');
 require('dotenv/config')
@@ -16,10 +17,12 @@ app.use(cors())
 /////////////////////////////////
 
 app.use('/static', express.static(path.join(__dirname, 'public')))
-    //app.use('/static', express.static('public'))
+//app.use('/static', express.static('public'))
+///////Client///////////////////////////////////////
+app.use('/news', newsRouterClient);
 
-////////////////////////////////
-
+//////Employee//////////////////////////////////////s
+app.use("/news", newsRouter);
 app.use("/employee", employeeRouter);
 
 /////////////////////////////////////////////////

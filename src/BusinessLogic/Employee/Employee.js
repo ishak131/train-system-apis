@@ -1,6 +1,6 @@
 const Edit = require('../Edit/Edit');
 const bcrypt = require('bcryptjs');
-const EmployeeModel = require("../../MongoSchema/Employee/employeeModel");
+const EmployeeModel = require('../../MongoSchema/Employee/employeeModel');
 
 class Employee extends Edit {
     constructor(Model) {
@@ -41,6 +41,34 @@ class Employee extends Edit {
         return res.json({ result });
     }
 
+    async getOneEmployee(req, res) {
+        try {
+            const { _id } = req.params;
+            const getOneModel = await this.Model.findById(_id);
+            if (!getOneModel) return res.sendStatus(404);
+            const {
+                firstName, lastName, phone_number, nationalIdNumber,
+                personalPicture, authority, age, gender, address, email, jobTitle
+            } = getOneModel;
+            return res.json({
+                result: {
+                    firstName, lastName, phone_number, nationalIdNumber,
+                    personalPicture, authority, age, gender, address, email, jobTitle
+                }
+            });
+        } catch (error) {
+            return res.sendStatus(400);
+        }
+    }
+
+    async getEmployees(_ids) {
+        try {
+            const employee = this.Model.find({ _id: { $in: _ids } });
+            return employee;
+        } catch (error) {
+            return [];
+        }
+    }
 }
 
 const employee = new Employee(EmployeeModel);
