@@ -34,13 +34,13 @@ class News extends Edit {
             if (employeeState == true) {
                 const { editedBy, postedBy } = selectedNews;
                 const employeePostedBy = await employee.getEmployees(postedBy);
-                const { firstName, lastName, image } = employeePostedBy[0];
-                selectedNews._doc.postedBy = { _id: selectedNews.postedBy, firstName, lastName, image };
+                const { firstName, lastName, personalPicture } = employeePostedBy[0];
+                selectedNews._doc.postedBy = { _id: selectedNews.postedBy, firstName, lastName, personalPicture };
                 selectedNews._doc.editedBy = await Promise.all(editedBy.map(async (element) => {
                     const { _id, editDate } = element;
                     const employeesEditedBy = await employee.getEmployee([_id]);
-                    const { firstName, lastName, image } = employeesEditedBy[0];
-                    return { _id, firstName, lastName, image, editDate };
+                    const { firstName, lastName, personalPicture } = employeesEditedBy[0];
+                    return { _id, firstName, lastName, personalPicture, editDate };
                 }));
                 return res.json({ selectedNews });
             }
