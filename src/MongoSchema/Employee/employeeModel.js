@@ -29,6 +29,10 @@ const EmployeeModel = mongoose.Schema({
     address: requiredString,
     email: requiredString,
     jobTitle: requiredString,
+    resetPassword: {
+        type: String,
+        default: ""
+    },
 
 })
 

@@ -1,5 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const authintication = require('./src/authintication/authintication');
+const authRouter = require('./src/routes/authintication/authinticationRoutes');
 const { newsRouter, newsRouterClient } = require('./src/routes/News/newsRoutes');
 const employeeRouter = require('./src/routes/Employee/employeeRoutes');
 const cors = require('cors');
@@ -20,12 +22,19 @@ app.use('/static', express.static(path.join(__dirname, 'public')))
 //app.use('/static', express.static('public'))
 ///////Client///////////////////////////////////////
 app.use('/news', newsRouterClient);
+/////////////////////////////////////////////////////
+app.use('/authintication', authRouter)
+/////////////////////////////////////////////////////
 
-//////Employee//////////////////////////////////////s
+app.use(authintication.authinticate)
+
+//////Employee///////////////////////////////////////
 app.use("/news", newsRouter);
 app.use("/employee", employeeRouter);
 
 /////////////////////////////////////////////////
+
+
 
 app.get('/', (req, res) => res.send('yes aim working on host 4000'))
 
