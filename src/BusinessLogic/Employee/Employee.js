@@ -61,13 +61,11 @@ class Employee extends Edit {
         }
     }
 
-    async getEmployees(_ids) {
-        try {
-            const employee = this.Model.find({ _id: { $in: _ids } });
+    async getEmployees(_id) {
+        const employee = this.Model.find({ _id: _id });
+        if (employee)
             return employee;
-        } catch (error) {
-            return [];
-        }
+        return [];
     }
 }
 
