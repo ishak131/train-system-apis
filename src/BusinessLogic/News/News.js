@@ -34,8 +34,15 @@ class News extends Edit {
             if (employeeState == true) {
                 const { editedBy, postedBy } = selectedNews;
                 const employeePostedBy = await employee.getEmployees(postedBy);
-                const { firstName, lastName, personalPicture } = employeePostedBy[0];
-                selectedNews._doc.postedBy = { _id: selectedNews.postedBy, firstName, lastName, personalPicture };
+                if (employeePostedBy.length > 0) {
+                    const { firstName, lastName, personalPicture } = employeePostedBy[0];
+                    selectedNews._doc.postedBy = { _id: selectedNews.postedBy, firstName, lastName, personalPicture };
+                }
+                else {
+                    selectedNews._doc.postedBy = {
+                        _id: selectedNews.postedBy, firstName: "", lastName: "", personalPicture: "NotFound"
+                    }
+                }
                 selectedNews._doc.editedBy = await Promise.all(editedBy.map(async (element) => {
                     const { _id, editDate } = element;
                     const employeesEditedBy = await employee.getEmployee([_id]);
@@ -49,7 +56,7 @@ class News extends Edit {
                 return res.json({ result: { title, description, caption, image, postDate } });
             }
         } catch (error) {
-            return res.status(400).send("error when get all model");
+            return res.status(400).send(`error when get One news${error}`);
         }
     }
 
