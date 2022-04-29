@@ -49,7 +49,7 @@ class News extends Edit {
                 return res.json({ result: { title, description, caption, image, postDate } });
             }
         } catch (error) {
-            return res.sendStatus(400);
+            return res.status(400).send("error when get all model");
         }
     }
 

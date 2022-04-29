@@ -1,9 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const lineRouter = require('./src/routes/Lines/lineRoutes');
+const trainRouter = require('./src/routes/Train/trainRoutes');
 const authintication = require('./src/authintication/authintication');
+const employeeRouter = require('./src/routes/Employee/employeeRoutes');
 const authRouter = require('./src/routes/authintication/authinticationRoutes');
 const { newsRouter, newsRouterClient } = require('./src/routes/News/newsRoutes');
-const employeeRouter = require('./src/routes/Employee/employeeRoutes');
 const cors = require('cors');
 require('dotenv/config')
 
@@ -30,6 +32,8 @@ app.use(authintication.authinticate)
 
 //////Employee///////////////////////////////////////
 app.use("/news", newsRouter);
+app.use("/line", lineRouter);
+app.use("/train", trainRouter);
 app.use("/employee", employeeRouter);
 
 /////////////////////////////////////////////////
